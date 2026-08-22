@@ -30,9 +30,11 @@ export function Dashboard({ state, rules, onPlan, onCalendar }: Props) {
         : <p>This is the base-rate equivalent. An enhanced shift may cover the gap in fewer paid hours.</p>}
     </section>
     <section className="card calendar-home-card">
-      <div className="section-heading"><div><span className="eyebrow">Calendar</span><h2>{state.calendarConnection ? 'Check for rota changes' : 'Connect your work calendar'}</h2></div>{state.calendarConnection && <span className="status good">Connected</span>}</div>
-      <p>{state.calendarConnection ? 'VIP will check for new or changed shifts and show them before updating your forecast.' : 'Use a read-only Apple, iCloud or subscribed rota calendar link.'}</p>
-      <button className="secondary-button calendar-home-button" onClick={onCalendar}>{state.calendarConnection ? 'Sync calendar' : 'Connect calendar'}</button>
+      <div className="section-heading"><div><span className="eyebrow">Your rota</span><h2>{state.calendarConnection ? 'iRota connected to VIP' : 'Connect iRota'}</h2></div>{state.calendarConnection && <span className="status good">Connected</span>}</div>
+      <p>{state.calendarConnection ? 'Check iRota for rota changes, then sync the read-only rota feed into VIP. Every change is shown for review before it affects your forecast.' : 'Sign in to iRota, then connect its read-only calendar subscription or exported .ics file. VIP will never ask for or store your iRota password.'}</p>
+      {!state.calendarConnection && <a className="secondary-button calendar-home-button" href="https://live.irota.co.uk" target="_blank" rel="noreferrer">Sign in to iRota</a>}
+      <button className="secondary-button calendar-home-button" onClick={onCalendar}>{state.calendarConnection ? 'Sync iRota' : 'Connect / sync rota'}</button>
+      <p className="fine-print">Current MVP connection uses iRota’s user-visible calendar/export route rather than a private or unsupported login session.</p>
     </section>
     <section className="card">
       <div className="section-heading"><div><span className="eyebrow">Childcare</span><h2>Assessment progress</h2></div><span className={assessment.differencePence >= 0 ? 'status good' : 'status warning'}>{assessment.differencePence >= 0 ? 'Forecast above target' : 'In progress'}</span></div>
