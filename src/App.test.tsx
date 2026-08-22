@@ -63,10 +63,12 @@ describe('VIP app', () => {
     expect(screen.getByLabelText('Finishes')).toHaveValue('20:00')
   })
 
-  it('offers a provider-neutral Apple calendar connection and safe file fallback', () => {
+  it('offers iRota sign-in plus provider-neutral calendar sync and safe file fallback', () => {
     render(<App />)
     continueAsDemo()
-    fireEvent.click(screen.getByRole('button', { name: 'Connect calendar' }))
+    expect(screen.getByRole('heading', { name: 'Connect iRota' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Sign in to iRota' })).toHaveAttribute('href', 'https://live.irota.co.uk')
+    fireEvent.click(screen.getByRole('button', { name: 'Connect / sync rota' }))
 
     expect(screen.getByRole('heading', { name: 'Sync your shifts' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Connect Apple Calendar' })).toBeInTheDocument()
@@ -88,7 +90,7 @@ END:VCALENDAR`
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(calendar, { status: 200 }))
     render(<App />)
     continueAsDemo()
-    fireEvent.click(screen.getByRole('button', { name: 'Connect calendar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Connect / sync rota' }))
     fireEvent.change(screen.getByLabelText('Calendar subscription link'), { target: { value: 'webcal://example.com/rota.ics' } })
     fireEvent.click(screen.getByRole('button', { name: 'Connect and check calendar' }))
 
@@ -133,7 +135,7 @@ END:VCALENDAR`
     fireEvent.change(screen.getByLabelText('Base hourly rate (£)'), { target: { value: '20' } })
     fireEvent.change(screen.getByLabelText('Assessment target (£)'), { target: { value: '2500' } })
     fireEvent.click(screen.getByRole('button', { name: 'Create my plan' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Connect calendar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Connect / sync rota' }))
 
     expect(screen.getByText(/Alex’s work rota/)).toBeInTheDocument()
     expect(screen.queryByText(/Demo’s work rota/)).not.toBeInTheDocument()
